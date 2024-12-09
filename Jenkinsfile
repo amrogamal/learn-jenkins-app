@@ -39,4 +39,9 @@ pipeline {
         }
      
     }
+    post{
+        success{
+            archiveArtifacts: 'build/**'
+        }
+    }
 }    
