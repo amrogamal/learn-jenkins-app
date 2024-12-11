@@ -22,6 +22,32 @@ pipeline {
             }
         }
         */
+
+        stage('Save Docker Image') {
+            steps {
+                sh '''
+                # Save the Docker image locally
+                docker save -o playwright-deps.tar playwright-image
+                '''
+            }
+        }
+        stage('Copy Docker Image to Workspace') {
+            steps {
+                sh '''
+                # Move the image file to the Jenkins workspace
+                mv my-docker-image.tar $WORKSPACE/
+                '''
+            }
+        }
+        stage('Load Docker Image') {
+            steps {
+                sh '''
+                # Load the Docker image in Jenkins
+                docker load -i $WORKSPACE/playwright-deps.tar
+                '''
+            }
+        }
+        /*
     
         stage('test'){
             agent{
