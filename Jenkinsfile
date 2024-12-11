@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                 # Save the Docker image locally
-                docker save -o playwright-deps.tar playwright-image:latest
+                docker save -o playwright-deps.tar docker.io/library/playwright-image
                 '''
             }
         }
@@ -35,7 +35,7 @@ pipeline {
             steps {
                 sh '''
                 # Move the image file to the Jenkins workspace
-                mv my-docker-image.tar $WORKSPACE/
+                mv playwright-deps $WORKSPACE/
                 '''
             }
         }
