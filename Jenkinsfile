@@ -23,31 +23,8 @@ pipeline {
         }
         */
 
-        stage('Save Docker Image') {
-            steps {
-                sh '''
-                # Save the Docker image locally
-                docker save -o playwright-deps.tar docker.io/library/playwright-image
-                '''
-            }
-        }
-        stage('Copy Docker Image to Workspace') {
-            steps {
-                sh '''
-                # Move the image file to the Jenkins workspace
-                mv playwright-deps $WORKSPACE/
-                '''
-            }
-        }
-        stage('Load Docker Image') {
-            steps {
-                sh '''
-                # Load the Docker image in Jenkins
-                docker load -i $WORKSPACE/playwright-deps.tar
-                '''
-            }
-        }
-        /*
+        
+        
     
         stage('test'){
             agent{
@@ -69,7 +46,7 @@ pipeline {
         stage('E2E'){
             agent{
                 docker{
-                    image 'mcr.microsoft.com/playwright:v1.49.1-noble'
+                    image ' mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
             }        
@@ -98,7 +75,7 @@ pipeline {
             junit 'jest-results/junit.xml'
 
         }
-        */ 
+        
     }
 }
    
