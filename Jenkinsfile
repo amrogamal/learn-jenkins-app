@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                 # Save the Docker image locally
-                docker save -o playwright-deps.tar playwright-image
+                docker save -o playwright-deps.tar playwright-image:latest
                 '''
             }
         }
