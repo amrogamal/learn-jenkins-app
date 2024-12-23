@@ -88,5 +88,26 @@ pipeline {
                 '''
             }
         }
+        stage('PROD E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        }
+                    }
+
+                    environment{
+                        CI_INVIRONMENT_URL = 'https://earnest-sherbet-bfd9f3.netlify.app/'
+                    }
+
+                    steps {
+                        sh '''
+                            
+                            npx playwright test  --reporter=html
+                        '''
+                    }
+
+                    
+                }
     }
 }
