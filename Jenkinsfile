@@ -5,7 +5,7 @@ pipeline {
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
 
     }
-
+/*
     stages {
 
         stage('Build') {
@@ -88,6 +88,7 @@ pipeline {
                 '''
             }
         }
+        */
         stage('PROD E2E') {
                     agent {
                         docker {
@@ -97,7 +98,7 @@ pipeline {
                     }
 
                     environment{
-                        CI_INVIRONMENT_URL = 'https://earnest-sherbet-bfd9f3.netlify.app/'
+                        CI_INVIRONMENT_URL = 'https://earnest-sherbet-bfd9f3.netlify.app'
                     }
 
                     steps {
@@ -108,6 +109,5 @@ pipeline {
                     }
 
                     
-                }
+        }
     }
-}
