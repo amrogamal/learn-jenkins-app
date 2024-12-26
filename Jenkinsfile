@@ -7,7 +7,7 @@ pipeline {
     }
 
     stages {
-        /*
+        
 
         stage('Build') {
             agent {
@@ -89,7 +89,11 @@ pipeline {
                 '''
             }
         }
-        */
+        stage('Approval'){
+            timeout(time: 15, unit: 'Minutes') {
+                input message: 'Are you sure you want to deploy?', ok: 'yes i want to deploy'
+            }
+        }
         stage('PROD E2E') {
                     agent {
                         docker {
