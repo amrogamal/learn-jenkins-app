@@ -72,8 +72,56 @@ pipeline {
                 }
             }
         }
+        stage('Deploy Staging') {
+            agent {
+                docker {
+                    image 'node:18-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    npm install netlify-cli node-jq
+                    node_modules/.bin/netlify --version
+                    node_modules/.bin/netlify status
+                    node_modules/.bin/netlify deploy --dir=build --jason > deploy_output.json
+                '''
+                script{
+                    env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true)
+                }
+            }
+        }
+       
+        stage('Staging E2E') {
+                    agent {
+                        docker {
+                            image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
+                            reuseNode true
+                        }
+                    }
 
-        stage('Deploy') {
+                    environment{
+                        CI_INVIRONMENT_URL = "${env.STAGING_URL}"
+                    }
+
+                    steps {
+                        sh '''
+                            
+                            npx playwright test  --reporter=html
+                        '''
+                    }
+
+                    
+        }
+        stage('Approval'){
+            steps{
+                timeout(time: 15, unit: 'MINUTES') {
+                    input message: 'Are you sure you want to deploy?', ok: 'yes i want to deploy'
+                }
+            }
+        }
+
+        stage('Deploy production') {
             agent {
                 docker {
                     image 'node:18-alpine'
@@ -89,13 +137,7 @@ pipeline {
                 '''
             }
         }
-        stage('Approval'){
-            steps{
-                timeout(time: 15, unit: 'MINUTES') {
-                    input message: 'Are you sure you want to deploy?', ok: 'yes i want to deploy'
-                }
-            }
-        }
+        
         stage('PROD E2E') {
                     agent {
                         docker {
