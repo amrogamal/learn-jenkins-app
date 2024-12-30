@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NETLIFY_SITE_ID = 'YOUR NETLIFY SITE ID'
+        NETLIFY_SITE_ID = '13b9d9fe-3446-4a09-8ab7-58a9b8fa97c9'
         NETLIFY_AUTH_TOKEN = credentials('netlify-token')
     }
 
@@ -148,7 +148,7 @@ pipeline {
             }
 
             environment {
-                CI_ENVIRONMENT_URL = 'YOUR NETLIFY URL'
+                CI_ENVIRONMENT_URL = 'https://earnest-sherbet-bfd9f3.netlify.app'
             }
 
             steps {
