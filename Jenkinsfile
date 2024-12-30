@@ -89,6 +89,7 @@ pipeline {
                 script{
                     env.STAGING_URL = sh(script: "node_modules/.bin/node-jq -r '.deploy_url' deploy-output.json", returnStdout: true)
                 }
+                sh 'echo "STAGING_URL IS : ${env.STAGING_URL}"'
             }
         }
        
@@ -106,7 +107,8 @@ pipeline {
 
                     steps {
                         sh '''
-                            
+                            echo "STAGING_URL IS : ${env.STAGING_URL}"
+
                             npx playwright test  --reporter=html
                         '''
                     }
